@@ -1,6 +1,7 @@
 use clap::Parser;
-use std::path::PathBuf;
+use std::{fs::File, path::PathBuf};
 
+mod gitjournal;
 mod keep;
 
 #[derive(Parser, Debug)]
@@ -18,7 +19,11 @@ fn main() -> anyhow::Result<()> {
 
     let notes = keep::read_notes(&args.keep_dir)?;
 
-    println!("{:?}", notes);
+    for (path, note) in &notes {
+        note.write_markdown(&mut File::create(
+            args.output_dir.join(gitjournal::file_name(path)),
+        )?)?;
+    }
 
     Ok(())
 }
