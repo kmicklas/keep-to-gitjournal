@@ -30,6 +30,9 @@ impl Note {
             let names: Vec<&str> = self.labels.iter().map(|l| l.name.as_str()).collect();
             writeln!(out, "tags: [{}]", names.join(", "))?;
         }
+        if &self.color != "DEFAULT" {
+            writeln!(out, "color: {}", self.color)?;
+        }
         writeln!(out, "---")?;
         writeln!(out)?;
         writeln!(out, "# {}", self.title)?;
@@ -49,6 +52,7 @@ mod tests {
         let mut markdown = Vec::new();
 
         Note {
+            color: "DEFAULT".to_owned(),
             is_trashed: false,
             is_archived: false,
             text_content: "• a\n• b".to_owned(),
@@ -79,6 +83,41 @@ tags: [Reference, Other]
 
 * a
 * b
+"#
+        );
+    }
+
+    #[test]
+    fn test_write_markdown_color() {
+        let mut markdown = Vec::new();
+
+        Note {
+            color: "ORANGE".to_owned(),
+            is_trashed: false,
+            is_archived: false,
+            text_content: "content".to_owned(),
+            title: "title".to_owned(),
+            user_edited_timestamp_usec: 1441394812887000,
+            created_timestamp_usec: 1412018652099000,
+            labels: vec![Label {
+                name: "Quote".to_owned(),
+            }],
+        }
+        .write_markdown(&mut markdown)
+        .unwrap();
+
+        assert_eq!(
+            String::from_utf8_lossy(&markdown),
+            r#"---
+created: 2014-09-29T19:24:12+00:00
+modified: 2015-09-04T19:26:52+00:00
+tags: [Quote]
+color: ORANGE
+---
+
+# title
+
+content
 "#
         );
     }

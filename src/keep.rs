@@ -9,6 +9,7 @@ use std::{
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Note {
+    pub color: String,
     pub is_trashed: bool,
     pub is_archived: bool,
     pub text_content: String,
@@ -52,6 +53,7 @@ mod tests {
         assert_eq!(
             note,
             Note {
+                color: "DEFAULT".to_owned(),
                 is_trashed: false,
                 is_archived: false,
                 text_content: "content".to_owned(),
@@ -74,6 +76,7 @@ mod tests {
         assert_eq!(
             note,
             Note {
+                color: "DEFAULT".to_owned(),
                 is_trashed: false,
                 is_archived: false,
                 text_content: "content".to_owned(),
