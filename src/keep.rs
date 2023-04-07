@@ -15,6 +15,13 @@ pub struct Note {
     pub title: String,
     pub user_edited_timestamp_usec: u64,
     pub created_timestamp_usec: u64,
+    pub labels: Vec<Label>,
+}
+
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Label {
+    pub name: String,
 }
 
 pub fn read_notes(dir: &Path) -> anyhow::Result<HashMap<PathBuf, Note>> {
@@ -50,6 +57,9 @@ mod tests {
                 title: "title".to_owned(),
                 user_edited_timestamp_usec: 1441394812887000,
                 created_timestamp_usec: 1412018652099000,
+                labels: vec![Label {
+                    name: "Reference".to_owned()
+                }]
             }
         );
     }
