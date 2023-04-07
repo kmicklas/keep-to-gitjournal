@@ -34,7 +34,7 @@ impl Note {
         writeln!(out)?;
         writeln!(out, "# {}", self.title)?;
         writeln!(out)?;
-        writeln!(out, "{}", self.text_content)?;
+        writeln!(out, "{}", self.text_content.replace("•", "*"))?;
         Ok(())
     }
 }
@@ -51,7 +51,7 @@ mod tests {
         Note {
             is_trashed: false,
             is_archived: false,
-            text_content: "content".to_owned(),
+            text_content: "• a\n• b".to_owned(),
             title: "title".to_owned(),
             user_edited_timestamp_usec: 1441394812887000,
             created_timestamp_usec: 1412018652099000,
@@ -77,7 +77,8 @@ tags: [Reference, Other]
 
 # title
 
-content
+* a
+* b
 "#
         );
     }
