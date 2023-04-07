@@ -19,5 +19,6 @@ Then commit/push the repo.
 * Configuration of output format
 * Keep formatting besides bullet lists (e.g. checkbox lists)
 * Images
+* Handling of newlines is very rudimentary
 
 PRs or issues for missing features are welcome.

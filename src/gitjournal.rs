@@ -37,7 +37,14 @@ impl Note {
         writeln!(out)?;
         writeln!(out, "# {}", self.title)?;
         writeln!(out)?;
-        writeln!(out, "{}", self.text_content.replace("•", "*"))?;
+        writeln!(
+            out,
+            "{}",
+            self.text_content
+                .replace("•", "*")
+                .replace("\n", "\n\n")
+                .replace("\n\n*", "\n*")
+        )?;
         Ok(())
     }
 }
@@ -95,7 +102,7 @@ tags: [Reference, Other]
             color: "ORANGE".to_owned(),
             is_trashed: false,
             is_archived: false,
-            text_content: "content".to_owned(),
+            text_content: "content\nnew line".to_owned(),
             title: "title".to_owned(),
             user_edited_timestamp_usec: 1441394812887000,
             created_timestamp_usec: 1412018652099000,
@@ -118,6 +125,8 @@ color: ORANGE
 # title
 
 content
+
+new line
 "#
         );
     }
