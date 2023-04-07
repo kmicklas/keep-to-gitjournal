@@ -15,6 +15,7 @@ pub struct Note {
     pub title: String,
     pub user_edited_timestamp_usec: i64,
     pub created_timestamp_usec: i64,
+    #[serde(default)]
     pub labels: Vec<Label>,
 }
 
@@ -60,6 +61,26 @@ mod tests {
                 labels: vec![Label {
                     name: "Reference".to_owned()
                 }]
+            }
+        );
+    }
+
+    #[test]
+    fn test_deserialize_no_labels() {
+        let data = r#"{"color":"DEFAULT","isTrashed":false,"isPinned":false,"isArchived":false,"textContent":"content","title":"title","userEditedTimestampUsec":1441394812887000,"createdTimestampUsec":1412018652099000}"#;
+
+        let note: Note = serde_json::from_str(data).unwrap();
+
+        assert_eq!(
+            note,
+            Note {
+                is_trashed: false,
+                is_archived: false,
+                text_content: "content".to_owned(),
+                title: "title".to_owned(),
+                user_edited_timestamp_usec: 1441394812887000,
+                created_timestamp_usec: 1412018652099000,
+                labels: vec![],
             }
         );
     }
