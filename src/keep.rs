@@ -1,14 +1,34 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use std::{
+    collections::HashMap,
+    ffi::OsStr,
+    fs::File,
+    path::{Path, PathBuf},
+};
 
-#[derive(Clone, PartialEq, Eq, Debug, Serialize, Deserialize)]
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Note {
-    is_trashed: bool,
-    is_archived: bool,
-    text_content: String,
-    title: String,
-    user_edited_timestamp_usec: u64,
-    created_timestamp_usec: u64,
+    pub is_trashed: bool,
+    pub is_archived: bool,
+    pub text_content: String,
+    pub title: String,
+    pub user_edited_timestamp_usec: u64,
+    pub created_timestamp_usec: u64,
+}
+
+pub fn read_notes(dir: &Path) -> anyhow::Result<HashMap<PathBuf, Note>> {
+    let mut notes = HashMap::new();
+
+    for child in dir.read_dir()? {
+        let child = child?;
+        let path = child.path();
+        if child.file_type()?.is_file() && path.extension() == Some(OsStr::new("json")) {
+            let note = serde_json::from_reader(File::open(&path)?)?;
+            notes.insert(path, note);
+        }
+    }
+    Ok(notes)
 }
 
 #[cfg(test)]

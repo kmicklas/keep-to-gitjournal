@@ -13,8 +13,12 @@ struct Args {
     output_dir: PathBuf,
 }
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
-    println!("{:?}", args)
+    let notes = keep::read_notes(&args.keep_dir)?;
+
+    println!("{:?}", notes);
+
+    Ok(())
 }
