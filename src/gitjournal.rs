@@ -20,3 +20,35 @@ impl Note {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_write_markdown() {
+        let mut markdown = Vec::new();
+
+        Note {
+            is_trashed: false,
+            is_archived: false,
+            text_content: "content".to_owned(),
+            title: "title".to_owned(),
+            user_edited_timestamp_usec: 1441394812887000,
+            created_timestamp_usec: 1412018652099000,
+        }
+        .write_markdown(&mut markdown)
+        .unwrap();
+
+        assert_eq!(
+            String::from_utf8_lossy(&markdown),
+            r#"---
+---
+
+# title
+
+content
+"#
+        );
+    }
+}
