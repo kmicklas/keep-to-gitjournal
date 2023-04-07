@@ -13,8 +13,8 @@ pub struct Note {
     pub is_archived: bool,
     pub text_content: String,
     pub title: String,
-    pub user_edited_timestamp_usec: u64,
-    pub created_timestamp_usec: u64,
+    pub user_edited_timestamp_usec: i64,
+    pub created_timestamp_usec: i64,
     pub labels: Vec<Label>,
 }
 
